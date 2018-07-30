@@ -27,25 +27,27 @@
 			
 		Class.forName(driver);
 
-(方法二)  直接获取某一个对象的class	
+(方法二)  通过类名方式直接获取某一个对象的class 	
 
 		Class<?> klass = int.class;
 
-		Class<?> classInt = Integer.TYPE
+		Class clazz = Dog.class；
 
 
-(方法三) 调用某个对象的getClass()方法
+(方法三) 通过实例变量方式，调用某个对象的getClass()方法
 
 		StringBuilder str = new StringBuilder("123");
 		Class<?> klass = str.getClass();
 
-- 2、判断是否为某个类的实例（我们用instanceof关键字来判断是否为某个类的实例，同时我们也可以借助反射中Class对象的isInstance()方法来判断是否为某个类的实例）
+		Dog dog = new Dog（）；
+		Class clazz = dog.getClass();
+- 2、判断是否为某个类的实例（我们用instanceof关键字来判断是否为某个类的实例，同时我们也可以借助反射中Class对象的isInstance()方法来判断是否为某个类的实例）(可省略)
 
 			
 		public native boolean isInstance(Object obj);
 
 
-- 3、创建实例（通过反射来生成对象主要有两种方式）
+- 3_1、创建实例（通过反射来生成对象主要有两种方式）
 
 
 (方法一)  使用Class对象的newInstance()方法来创建Class对象对应类的实例:
@@ -63,7 +65,7 @@
 		Object obj = constructor.newInstance("23333");
 		//System.out.println(obj);
 
-- 4、获取方法（获取某个Class对象的方法集合，主要有以下几个方法：）（看test1实例）
+- 3_2、获取方法（获取某个Class对象的方法集合，主要有以下几个方法：）（看test1实例）
 
 
 (方法一)  getDeclaredMethods()方法返回类或接口声明的所有方法，包括公共、保护、默认（包）访问和私有方法，但不包括继承的方法。:
@@ -82,24 +84,69 @@
 			
 		public Method getMethod(String name, Class<?>... parameterTypes)
 
-- 5、获取构造器信息（获取类构造器的用法与上述获取方法的用法类似。主要是通过Class类的getConstructor方法得到Constructor类的一个实例，而Constructor类有一个newInstance方法可以创建一个对象实例:）
+
+例子：
+
+			Class<?> c = methodClass.class;
+			Object object = c.newInstance();
+			Method[] methods = c.getMethods();
+			Method[] declaredMethods = c.getDeclaredMethods();
+			//获取methodClass类的add方法
+			Method method = c.getMethod("add", int.class, int.class);
+			//getMethods()方法获取的所有方法
+			System.out.println("getMethods获取的方法：");
+			for(Method m:methods)
+			System.out.println(m);
+			//getDeclaredMethods()方法获取的所有方法
+			System.out.println("getDeclaredMethods获取的方法：");
+			for(Method m:declaredMethods)
+			System.out.println(m);
+
+
+- 3_3、获取构造器信息（获取类构造器的用法与上述获取方法的用法类似。主要是通过Class类的getConstructor方法得到Constructor类的一个实例，而Constructor类有一个newInstance方法可以创建一个对象实例:）
 
 			
 		public T newInstance(Object ... initargs);
-- 6、获取类的成员变量（字段）信息
+
+例子：
+
+		Class class_dog = Dog.class;
+        Constructor constructor = class_dog.getConstructor(String.class, int.class);
+        constructor.newInstance("Tom", 10);
+
+- 3_4、获取类的成员变量（字段）信息
 
 		getFiled: 访问公有的成员变量
 		getDeclaredField：所有已声明的成员变量。但不能得到其父类的成员变量
 		getFileds和getDeclaredFields用法同上（参照Method）
 
-- 7、调用方法（当我们从类中获取了一个方法后，我们就可以用invoke()方法来调用这个方法。invoke方法的原型为:）（test2实例）
+	例子:
+
+		Class class_dog = Dog.class;
+		Field[] fields = class_dog.getDeclaredFields();
+		for (Field field : fields) {
+		    System.out.println(field.getName());
+		}
+
+
+- 3_5、调用方法（当我们从类中获取了一个方法后，我们就可以用invoke()方法来调用这个方法。invoke方法的原型为:）
 
 			
 		public Object invoke(Object obj, Object... args)
         throws IllegalAccessException, IllegalArgumentException,
            InvocationTargetException
 
-- 8、利用反射创建数组（数组在Java里是比较特殊的一种类型，它可以赋值给一个Object Reference，利用反射创建数组的例子:）
+例子：
+
+			Class<?> klass = methodClass.class;
+	        //创建methodClass的实例
+	        Object obj = klass.newInstance();
+	        //获取methodClass类的add方法
+	        Method method = klass.getMethod("add",int.class,int.class);
+	        //调用method对应的方法 => add(1,4)
+	        Object result = method.invoke(obj,1,4);
+
+- 3_6、利用反射创建数组（数组在Java里是比较特殊的一种类型，它可以赋值给一个Object Reference，利用反射创建数组的例子:）
 
 			
 		public static void testArray() throws ClassNotFoundException {
@@ -117,75 +164,7 @@
 
 ##
 
-### 具体代码 ###
-	public class test1 {
-		public static void test() throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-		        Class<?> c = methodClass.class;
-		        Object object = c.newInstance();
-		        Method[] methods = c.getMethods();
-		        Method[] declaredMethods = c.getDeclaredMethods();
-		        //获取methodClass类的add方法
-		        Method method = c.getMethod("add", int.class, int.class);
-		        //getMethods()方法获取的所有方法
-		        System.out.println("getMethods获取的方法：");
-		        for(Method m:methods)
-		            System.out.println(m);
-		        //getDeclaredMethods()方法获取的所有方法
-		        System.out.println("getDeclaredMethods获取的方法：");
-		        for(Method m:declaredMethods)
-		            System.out.println(m);
-		    }
-	    }
-	class methodClass {
-	    public final int fuck = 3;
-	    public int add(int a,int b) {
-	        return a+b;
-	    }
-	    public int sub(int a,int b) {
-	        return a+b;
-	    }
-	}
 
-### 代码结果 ###
-	getMethods获取的方法：
-	public int org.ScZyhSoft.common.methodClass.add(int,int)
-	public int org.ScZyhSoft.common.methodClass.sub(int,int)
-	public final void java.lang.Object.wait() throws java.lang.InterruptedException
-	public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException
-	public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException
-	public boolean java.lang.Object.equals(java.lang.Object)
-	public java.lang.String java.lang.Object.toString()
-	public native int java.lang.Object.hashCode()
-	public final native java.lang.Class java.lang.Object.getClass()
-	public final native void java.lang.Object.notify()
-	public final native void java.lang.Object.notifyAll()
-	getDeclaredMethods获取的方法：
-	public int org.ScZyhSoft.common.methodClass.add(int,int)
-	public int org.ScZyhSoft.common.methodClass.sub(int,int)
-##
-
-
-	public class test2 {
-	    public static void main(String[] args) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-	        Class<?> klass = methodClass.class;
-	        //创建methodClass的实例
-	        Object obj = klass.newInstance();
-	        //获取methodClass类的add方法
-	        Method method = klass.getMethod("add",int.class,int.class);
-	        //调用method对应的方法 => add(1,4)
-	        Object result = method.invoke(obj,1,4);
-	        System.out.println(result);
-	    }
-	}
-	class methodClass {
-	    public final int fuck = 3;
-	    public int add(int a,int b) {
-	        return a+b;
-	    }
-	    public int sub(int a,int b) {
-	        return a+b;
-	    }
-	}
 ### 实现效果/成效: ###
 
 能反射出想要的对象及其属性参数/数值。
@@ -216,3 +195,5 @@
 ### 参考文档 ###
 
 [深入解析Java反射（1） - 基础](https://www.sczyh30.com/posts/Java/java-reflection-1/)
+
+[说说Java反射机制](https://www.jianshu.com/p/1a21a9cb5bea)
