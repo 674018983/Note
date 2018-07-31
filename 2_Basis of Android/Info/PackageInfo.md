@@ -2,69 +2,55 @@
 
 ##
 
-**解释** **：**  专业名词的相关定义、解释。
+**解释** **：**  
 
-**作用** **：** 主要用于什么用途，有什么用，能帮助我解决什么问题。
+**作用** **：** PackageInfo是实现Parcelable接口，所以它可以在进程间传递
 
-**使用小用例** **：** 举例目前遇到的问题，将问题简约化、具体化。
-
-##
-
-## 基本使用 ##
-
-### 操作步骤: ###
-
-- 先执行相关背景（准备条件）
-- 再执行具体步骤
-
-	`JAVA mjava = new JAVA();`
-- 再执行具体步骤
-
-	`JAVA.FORM(getContext).build();`
-- 再执行具体步骤
-
-	`JAVA.show();`
-##
-
-### 实现效果/成效: ###
-
-会加载出相应的图片/或实现解耦功能等。
-	
-##
-
-### 优点 ###
-
-便于寻找到隐藏或不公开的数据
-
-### 缺点/不足 ###
-
-实例化能力不够
+**使用小用例** **：** 
 
 ##
 
-### 更多扩展知识/具体命令详解 ###
+### 重要成员变量简介： ###
+- **public String packageName** **：** 包名
 
-git clone [链接]
+- **public String versionName** **：** 版本名
 
-- 作用：下载相关项目
-- 具体参数解释：
+- **public String versionCode** **：** 版本号
+
+- **public String sharedUserId** **：** 共享用户ID，签名相同的情况下程序之间数据共享
+
+- **public long firstInstallTime** **：** 第一次安装时间，忽略之前安装后卸载的情况单位ms
+
+- **public long lastUpdateTime** **：** 最后更新时间，相同版本号的APK覆盖安装，该值也会发生变化，单位ms
+
+- **public String[] requestedPermissions** **：** 请求的权限
+
+- **public ApplicationInfo applicationInfo** **：** Applicationinfo对象
+
+- **public ActivityInfo[] activities** **：** 注册的Activity
+
+- **public ActivityInfo[] receivers** **：** 注册的Receiver，PS：注意这里是ActivityInfo[]
+
+- **public ServiceInfo[] services** **：** 注册的服务
+
+- **public ProviderInfo[] providers** **：** 注册的Providers
 
 
-	`git(git软件使用指令) `
+###重要方法介绍：###
+- **public PackageInfo()** **：** 构造函数
 
-	`clone（表示要下载的指令）`
-	
-	`[链接]（你要下载项目的下载链接）`
+- **private PackageInfo(Parcel source)** **：** 构造函数，反序列时用到的，注意这个方法是private，所以这个方法只是给反序列时用的，所以PackageInfo对外就提供一个构造函数
 
-- 实例：git clone www.baidu.com
- 
+- **private void propagateApplicationInfo(ApplicationInfo appInfo, ComponentInfo[] components)** **：** 主要是给入参的components中的每一项ComponentInfo的applicationInfo变量指向第一个入参appInfo。
 
+
+##
 ### 具体个人分析 ###
 
-该项目专门在网络领域上使用，主要作用是为了获取IP信息以及设置相关网络设置，比如Wifi，数据等，同时可以通过System将数据存放到Android系统中。
+一个存储/获取包的序列化类
 
 ##
 
 ### 参考文档 ###
 
-JNI简单使用[JNI简单使用](www.baidu.com)
+[APK安装流程详解1——有关"安装ing"的实体类概述](https://www.jianshu.com/p/71c1ce538ee8)
