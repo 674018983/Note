@@ -2,69 +2,42 @@
 
 ##
 
-**解释** **：**  专业名词的相关定义、解释。
+**解释** **：**  它继承自ComponentInfo并实现了Parcelable接口，它对应manifest里面的<service>节点的信息。
 
-**作用** **：** 主要用于什么用途，有什么用，能帮助我解决什么问题。
+**作用** **：** 
 
-**使用小用例** **：** 举例目前遇到的问题，将问题简约化、具体化。
-
-##
-
-## 基本使用 ##
-
-### 操作步骤: ###
-
-- 先执行相关背景（准备条件）
-- 再执行具体步骤
-
-	`JAVA mjava = new JAVA();`
-- 再执行具体步骤
-
-	`JAVA.FORM(getContext).build();`
-- 再执行具体步骤
-
-	`JAVA.show();`
-##
-
-### 实现效果/成效: ###
-
-会加载出相应的图片/或实现解耦功能等。
-	
-##
-
-### 优点 ###
-
-便于寻找到隐藏或不公开的数据
-
-### 缺点/不足 ###
-
-实例化能力不够
+**使用小用例** **：** 
 
 ##
 
-### 更多扩展知识/具体命令详解 ###
 
-git clone [链接]
+### 重要成员变量简介： ###
 
-- 作用：下载相关项目
-- 具体参数解释：
+- **public String permission：**这个Service的访问权限
 
+- **public int flags：**表示service在AndroidManifest设置的选项
 
-	`git(git软件使用指令) `
+		public static final int FLAG_STOP_WITH_TASK：
+		如果用户删除了预计应程序的Activitiest，系统将自动停止这个Service
 
-	`clone（表示要下载的指令）`
-	
-	`[链接]（你要下载项目的下载链接）`
+		public static final int FLAG_ISOLATED_PROCESS：
+		Service在其独立的进程中运行
 
-- 实例：git clone www.baidu.com
+		public static final int FLAG_EXTERNAL_SERVICE：
+		这个�Service可以被外部包调用
+
+		public static final int FLAG_SINGLE_USER：
+		表示Service就是一个单例。
+
+##
+
  
 
 ### 具体个人分析 ###
-
-该项目专门在网络领域上使用，主要作用是为了获取IP信息以及设置相关网络设置，比如Wifi，数据等，同时可以通过System将数据存放到Android系统中。
+它对应manifest里面的<service>节点的信息。
 
 ##
 
 ### 参考文档 ###
 
-JNI简单使用[JNI简单使用](www.baidu.com)
+[APK安装流程详解1——有关"安装ing"的实体类概述](https://www.jianshu.com/p/71c1ce538ee8)

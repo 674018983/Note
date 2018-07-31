@@ -2,69 +2,47 @@
 
 ##
 
-**解释** **：**  专业名词的相关定义、解释。
+**解释** **：**  它继承自ComponentInfo并实现了Parcelable接口，它对应manifest里面的<provider>节点的信息。
 
-**作用** **：** 主要用于什么用途，有什么用，能帮助我解决什么问题。
+**作用** **：** 
 
-**使用小用例** **：** 举例目前遇到的问题，将问题简约化、具体化。
-
-##
-
-## 基本使用 ##
-
-### 操作步骤: ###
-
-- 先执行相关背景（准备条件）
-- 再执行具体步骤
-
-	`JAVA mjava = new JAVA();`
-- 再执行具体步骤
-
-	`JAVA.FORM(getContext).build();`
-- 再执行具体步骤
-
-	`JAVA.show();`
-##
-
-### 实现效果/成效: ###
-
-会加载出相应的图片/或实现解耦功能等。
-	
-##
-
-### 优点 ###
-
-便于寻找到隐藏或不公开的数据
-
-### 缺点/不足 ###
-
-实例化能力不够
+**使用小用例** **：** 
 
 ##
 
-### 更多扩展知识/具体命令详解 ###
+### 重要成员变量简介： ###
 
-git clone [链接]
+- **public String authority：**提供者的名字
 
-- 作用：下载相关项目
-- 具体参数解释：
+- **public String readPermission：**只读的provider的访问权限
+
+- **public String writePermission：**读写的provider的访问权限
+
+- **public boolean grantUriPermissions：**是否授予provider提供特定的Uris访问权限
+
+- **public PatternMatcher[] uriPermissionPatterns：**provider的PatternMatcher数组
+
+- **public PathPermission[] pathPermissions：**provider的PathPermission数组
+
+- **public boolean multiprocess = false：**是否允许多进程多实例
+
+- **public int initOrder = 0：**同一个进程运行的的provider的初始顺序，数字越高，优先级越高
+
+- **public int flags：**provider的选项
+
+		public static final int FLAG_SINGLE_USER = 0x40000000：设置为provider为单例模式。
 
 
-	`git(git软件使用指令) `
+##
 
-	`clone（表示要下载的指令）`
-	
-	`[链接]（你要下载项目的下载链接）`
-
-- 实例：git clone www.baidu.com
  
 
 ### 具体个人分析 ###
 
-该项目专门在网络领域上使用，主要作用是为了获取IP信息以及设置相关网络设置，比如Wifi，数据等，同时可以通过System将数据存放到Android系统中。
+它对应manifest里面的<provider>节点的信息。
 
 ##
 
 ### 参考文档 ###
 
-JNI简单使用[JNI简单使用](www.baidu.com)
+[APK安装流程详解1——有关"安装ing"的实体类概述](https://www.jianshu.com/p/71c1ce538ee8)
